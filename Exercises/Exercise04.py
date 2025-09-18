@@ -74,5 +74,23 @@ plt.show()
 #Note to self- Fråga om convergence, hur tar jag reda på det?¨
 
 #7
-for i in range(1000000):
-    #slumpa vald dörr, slumpa 2 dåliga dörrar, eliminera en, lägg till i lista vilken av de två sista är bra
+statistik = []
+doorStatsX = []
+switchStatsY = []
+stayStatsY = []
+for i in range(1, 1000001):
+    kanin = random.randint(1,3)
+    valdDörr = random.randint(1,3)
+    statistik.append([kanin, valdDörr])
+    if i == 10 or i == 100 or i == 1000 or i == 10000 or i == 100000 or i == 1000000:
+        resultat = [1 for row in statistik if row[0] == row[1]]
+        stayStatsY.append(resultat.count(1) / len(statistik))
+        switchStatsY.append((len(statistik) - resultat.count(1)) / len(statistik))
+        doorStatsX.append(i)
+plt.plot(switchStatsY, "-*", label = "switch", color = "red")
+plt.plot(stayStatsY, "-*", label = "stay", color = "blue")
+plt.title("7b: probability of winning when switching vs not switching door")
+plt.xticks([0, 1, 2, 3, 4, 5], diceStatsX)
+plt.xlabel("Number simulations")
+plt.ylabel("probability of winning")
+plt.show()
