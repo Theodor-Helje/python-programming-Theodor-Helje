@@ -54,9 +54,9 @@ print(f"2 and 3: Done.\n\n")
 
 diceRollsPath = os.path.abspath(rf"{filePath}\dice_rolls.txt")
 textResultCopyPath = os.path.abspath(rf"{filePath}\text_result_copy.txt")
-if str(input("tryck enter för att behålla filerna, skriv vad som helst för att ta bort dem.")) != '':
-    #os.remove(diceRollsPath)
-    #os.remove(textResultCopyPath)
+if input("tryck enter för att behålla filerna, skriv vad som helst för att ta bort dem.") != '':
+    os.remove(diceRollsPath)
+    os.remove(textResultCopyPath)
     print(f"{diceRollsPath} deleted")
     print(f"{textResultCopyPath} deleted")
 print("done.")
