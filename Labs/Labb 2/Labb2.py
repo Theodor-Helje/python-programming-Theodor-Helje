@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import random
 filePath = "Labs\Labb 2\Data_And_Testdata"
 k = 1
+timesToSimulateAccuracy = 10
 
 def getUserPositiveNumericInput(firstMessage):
     while True:
@@ -20,6 +21,7 @@ def getUserPositiveNumericInput(firstMessage):
 
 
 def knnClassification(k, dataList, dataTest):
+    prediction = {}
     pichu, pikachu = 0, 0
     distanceList = [[np.sqrt(np.pow(dataTest[0] - i[0], 2) + np.pow(dataTest[1] - i[1], 2)), i[2]] for i in dataList]
     distanceList.sort(key = lambda distanceKey : distanceKey[0])
@@ -29,11 +31,12 @@ def knnClassification(k, dataList, dataTest):
         else:
             pikachu +=1
     if pichu > pikachu:
-        pokemon = "Pichu"
-        #prediction[pokemon] = "Pichu"
+        prediction ['pokemon'] = "Pichu"
+        prediction ['pokemonClass'] = 0
     else:
-        pokemon = "Pikachu"
-    return(pokemon)
+        prediction ['pokemon'] = "Pikachu"
+        prediction ['pokemonClass'] = 1
+    return(prediction)
 
 with open(rf"{filePath}\datapoints.txt",'r') as dataFile:
     dataList = dataFile.read().splitlines()
@@ -47,28 +50,39 @@ userPoints = [getUserPositiveNumericInput("1: input width:"), getUserPositiveNum
 
 plt.scatter([x[0] for x in pichuDataPoints], [y[1] for y in pichuDataPoints], c = 'red', label = "Pichu")
 plt.scatter([x[0] for x in pikachuDataPoints], [y[1] for y in pikachuDataPoints], c = 'orange', label = "Pikachu")
-plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted (k = {k}): {knnClassification(k, dataPoints, userPoints)}")
-plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted (k = {k*10}): {knnClassification(k*10, dataPoints, userPoints)}")
+plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted (k = {k}): {knnClassification(k, dataPoints, userPoints)['pokemon']}")
+plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted (k = {k*10}): {knnClassification(k*10, dataPoints, userPoints)['pokemon']}")
 plt.xlabel("width")
 plt.ylabel("height")
 plt.title(f"uppgift 1 och 2:")
 plt.legend()
 plt.show()
 
-testData = []
-trainingData = []
-testReslutData = 0
-random.shuffle(pichuDataPoints)
-random.shuffle(pikachuDataPoints)
+accuracy = []
+for i in range(timesToSimulateAccuracy):
+    testData = []
+    trainingData = []
+    testReslutData = 0
+    random.shuffle(pichuDataPoints)
+    random.shuffle(pikachuDataPoints)
 
-for i in range(75): #because our data set never changes
-    if i < 25:
-        testData.append([pichuDataPoints[i], 'Pichu'])
-        testData.append([pikachuDataPoints[i], 'Pikachu'])
-    else:
-        trainingData.append(pichuDataPoints[i])
-        trainingData.append(pikachuDataPoints[i])
+    for j in range(75):
+        if j < 25:
+            testData.append(pichuDataPoints[j])
+            testData.append(pikachuDataPoints[j])
+        else:
+            trainingData.append(pichuDataPoints[j])
+            trainingData.append(pikachuDataPoints[j])
 
-for i in range(50):
-    testReslutData += 1 if knnClassification(k, trainingData, testData[i][0]) == testData[i][1] else 0
-print(f"{testReslutData/len(testData)}")
+    for j in range(50):
+        testReslutData += 1 if knnClassification(k, trainingData, testData[j])['pokemonClass'] == testData[j][2] else 0
+
+    accuracy.append(testReslutData/len(testData))
+
+plt.plot(range(1,timesToSimulateAccuracy + 1), accuracy, marker = 'o', color = 'blue', label = "accuracy of simulation x")
+plt.xticks(range(1,timesToSimulateAccuracy + 1))
+plt.title(f"average accuracy: {sum(accuracy) / len(accuracy):.3f}")
+plt.xlabel("times simulated")
+plt.ylabel("accuracy")
+plt.grid()
+plt.show()
