@@ -30,6 +30,7 @@ def knnClassification(k, dataList, dataTest):
             pikachu +=1
     if pichu > pikachu:
         pokemon = "Pichu"
+        #prediction[pokemon] = "Pichu"
     else:
         pokemon = "Pikachu"
     return(pokemon)
@@ -46,7 +47,8 @@ userPoints = [getUserPositiveNumericInput("1: input width:"), getUserPositiveNum
 
 plt.scatter([x[0] for x in pichuDataPoints], [y[1] for y in pichuDataPoints], c = 'red', label = "Pichu")
 plt.scatter([x[0] for x in pikachuDataPoints], [y[1] for y in pikachuDataPoints], c = 'orange', label = "Pikachu")
-plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted: {knnClassification(k, dataPoints, userPoints)}")
+plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted (k = {k}): {knnClassification(k, dataPoints, userPoints)}")
+plt.scatter(userPoints[0], userPoints[1], c = 'blue', label = f"predicted (k = {k*10}): {knnClassification(k*10, dataPoints, userPoints)}")
 plt.xlabel("width")
 plt.ylabel("height")
 plt.title(f"uppgift 1 och 2:")
@@ -55,17 +57,18 @@ plt.show()
 
 testData = []
 trainingData = []
+testReslutData = 0
 random.shuffle(pichuDataPoints)
 random.shuffle(pikachuDataPoints)
+
 for i in range(75): #because our data set never changes
     if i < 25:
-        testData.append(pichuDataPoints[i])
-        testData.append(pikachuDataPoints[i])
+        testData.append([pichuDataPoints[i], 'Pichu'])
+        testData.append([pikachuDataPoints[i], 'Pikachu'])
     else:
         trainingData.append(pichuDataPoints[i])
         trainingData.append(pikachuDataPoints[i])
 
-for i in testData:
-    testResultData = 0 if knnClassification(k, trainingData, i) == 'Pichu' else 1
-for i in testResultData:
-    print(i)
+for i in range(50):
+    testReslutData += 1 if knnClassification(k, trainingData, testData[i][0]) == testData[i][1] else 0
+print(f"{testReslutData/len(testData)}")
