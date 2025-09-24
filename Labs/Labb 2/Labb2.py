@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-filePath = "Labs\Labb 2\Data_And_Testdata"
+filePath = "Labb 2\Data_And_Testdata"
 k = 1
 timesToSimulateAccuracy = 10
 
