@@ -1,4 +1,4 @@
-import numpy as np
+import numpy as np #this project uses the exercises_env
 import pandas as pd
 import matplotlib.pyplot as plt
 import csv
