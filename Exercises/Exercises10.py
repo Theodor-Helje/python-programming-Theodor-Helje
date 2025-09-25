@@ -6,7 +6,7 @@ import random
 theoreticalMean = np.sum(range(1,7)) / 6
 print(theoreticalMean)
 
-diceRollValues = 0
-for i in range(1,1000001):
-    diceRollValues += random.randint(1,6)
-    if i == 10^
+diceRollValues = np.array(np.random.randint(1,6, size = 1000000))
+#Skapa np.array
+#np.mean på arrayen
+print(diceRollValues)
