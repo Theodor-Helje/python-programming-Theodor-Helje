@@ -41,3 +41,12 @@ plt.title("4 dices probability distributions")
 plt.show()
 
 #3
+pointsX = np.random.uniform(-1, 1, size = (500_000))
+pointsY = np.random.uniform(-1, 1, size = (500_000))
+distances = np.linalg.norm(np.column_stack((pointsX, pointsY)), axis=1)
+print(distances)
+plt.scatter(pointsX, pointsY, color = np.where(distances > 1, 'red', 'blue'))
+plt.show()
+#3b
+print(np.pi)
+print(np.pi / 4) #rätt?
