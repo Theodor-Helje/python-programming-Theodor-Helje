@@ -39,3 +39,5 @@ diceGrid = diceOutcomesX + diceOutcomesY + diceOutcomesZ + diceOutcomesFour
 plt.bar(range(4, 25), [np.count_nonzero(diceGrid == i) / np.count_nonzero(diceGrid) for i in range(4, 25)])
 plt.title("4 dices probability distributions")
 plt.show()
+
+#3
