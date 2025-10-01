@@ -38,3 +38,53 @@ for i in range(1, 11):
     print(f"{units.value} pounds is {units.pound_to_kg()} kilograms")
 
 #2
+
+class Person:
+    def __init__(self, name, age, email):
+        self.name = name
+        self.age = age
+        self.email = email
+    
+    @property
+    def name(self):
+        return self._name
+    
+    @property
+    def age(self):
+        return self._age
+    
+    @property
+    def email(self):
+        return self._email
+    
+    @name.setter
+    def name(self, name):
+        if not isinstance(name, str):
+            raise TypeError("name must be a string")
+        self._name = name
+
+    @age.setter
+    def age(self, age):
+        if not isinstance(age, (int, float)):
+            raise TypeError("age must be int or float")
+        elif not 0 <= age <= 125:
+            raise ValueError("age must be 0 <= age <= 125")
+        self._age = age
+
+    @email.setter
+    def email(self, email):
+        if not isinstance(email, str):
+            raise TypeError("email must be a string")
+        elif not '@' in email:
+            raise NameError("email must contain @")
+        self._email = email
+    
+    def say_hello(self):
+        print(f"Hi, my name is {self.name}, I am {self.age} years old, my email adress is {self.email}")
+    
+    def __repr__(self):
+        return f"Person(name={self.name}, age={self.age}, email={self.email})"
+
+p = Person("Theodor", 20, "Theodor.Helje@iths.se")
+print(p)
+p.say_hello()
