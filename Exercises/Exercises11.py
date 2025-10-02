@@ -88,3 +88,23 @@ class Person:
 p = Person("Theodor", 20, "Theodor.Helje@iths.se")
 print(p)
 p.say_hello()
+
+#3
+class Student(Person):
+    def study(self):
+        print("study...study...study...more study")
+    def say_hello(self):
+        print(f"Yo, I am a student, my name is {self.name}, I am {self.age} years old, my email adress is {self.email}")
+    def __repr__(self):
+        return f"Student(name={self.name}, age={self.age}, email={self.email})"
+    
+class Teacher(Person):
+    def teach(self):
+        print("teach...teach...teach...mroe teaching")
+
+t = Teacher("Pernilla", 32, "pernilla@gmail.com")
+s = Student("Karl", 25, "karl@gmail.com")
+t.teach()
+t.say_hello()
+s.study()
+s.say_hello()
