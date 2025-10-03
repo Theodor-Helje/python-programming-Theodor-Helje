@@ -108,3 +108,50 @@ t.teach()
 t.say_hello()
 s.study()
 s.say_hello()
+
+#4
+class Field:
+    def __init__(self, resource=0, resource_name=""):
+        self.resource = resource
+        self.resource_name = resource_name
+    
+    @property
+    def resource(self):
+        return self._resource
+    
+    @property
+    def resource_name(self):
+        return self._resource_name
+    
+    @resource.setter
+    def resource(self, resource):
+        self._resource = max(min(resource, 800), 0)
+
+    @resource_name.setter
+    def resource_name(self, resource_name):
+        self._resource_name = resource_name
+    
+    def __add__(self, other):
+        return Field(max(min(self.resource + other, 800), 0), self.resource_name)
+    
+    def __sub__(self, other):
+        return Field(max(min(self.resource - other, 800), 0), self.resource_name)
+    
+    def __repr__(self):
+        return f"{self.resource_name}: {self.resource}/800, +4 per hour"
+
+class Village:
+    def __init__(self):
+        self.crop_field = Field(resource_name="Wheat")
+        self.clay_field = Field(resource_name="Clay")
+        self.lumber_field = Field(resource_name="Lumber")
+        self.iron_field = Field(resource_name="Iron")
+    def __repr__(self):
+        return f"\nStock and production:\n{self.crop_field}\n{self.clay_field}\n{self.lumber_field}\n{self.iron_field}"
+
+vil = Village()
+vil.crop_field += 500
+vil.clay_field +=900
+vil.lumber_field -= 9999
+vil.iron_field += 725
+print(vil)
