@@ -80,3 +80,24 @@ code = Documentary("The Code", "Math", 4)
 
 for video in tuple((pokemon, titanic, code)):
     print(video.info())
+
+class frac:
+    def __init__(self, nominator=None, denominator=None):
+        self.nominator = nominator
+        self.denominator = denominator
+    
+    @property
+    def nominator(self):
+        return self._nominator
+    
+    @property
+    def denominator(self):
+        return self._denominator
+    
+    @nominator.setter
+    def nominator(self, nominator):
+        self._nominator = nominator
+    
+    @denominator.setter
+    def denominator(self, denominator):
+        self._denominator = denominator
