@@ -1,8 +1,6 @@
 import numpy as np #this project uses the exercises_env
 import pandas as pd
 import matplotlib.pyplot as plt
-import csv
-import os
 filePath = r"C:\Users\herrt\Desktop\Git Repos\python-programming-Theodor-Helje\Labs\Labb 3"
 
 def classifyPoint(k, m, xPoint, yPoint):
