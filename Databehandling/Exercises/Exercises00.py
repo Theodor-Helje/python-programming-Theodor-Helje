@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-show_plots = False
+show_plots = True
 #jag har väldigt medvetet valt att återanvända viss kod (som t.ex. barplots) för enkelheten
 #jag är smått missnöjd över hur lång rader jag har skrivit men det är för enkelt och tidskrävande att skriva allt mindre och i funktioner
 #också onöjd med att jag använder "" föt DF och inte ''
@@ -34,9 +34,9 @@ print(f"2e: Swedens population 2019, 2020\n{cities_sweden["Folkmängd 2019"].sum
 
 if show_plots:
     fig, axes = plt.subplots(1, 2, figsize=(11,5))
-    sns.barplot(data=cities_sweden.head(5), x="Kommun", y="Folkmängd 2020", palette='pastel', ax=axes[0])
+    sns.barplot(data=cities_sweden.sort_values(by="Rang 2020").head(5), x="Kommun", y="Folkmängd 2020", palette='pastel', ax=axes[0])
     axes[0].set_title("2f: Sveriges 5 största kommuner 2020")
-    sns.barplot(data=cities_sweden.tail(5), x="Kommun", y="Folkmängd 2020", palette='pastel', ax=axes[1])
+    sns.barplot(data=cities_sweden.sort_values(by="Rang 2020", ascending=False).head(5), x="Kommun", y="Folkmängd 2020", palette='pastel', ax=axes[1])
     axes[1].set_title("2f: Sveriges 5 minsta kommuner 2020")
     plt.show()
 
@@ -64,6 +64,12 @@ cities_sweden_final["Könsskillnad (%)"] = np.abs(
         / male_DF["Folkmängd 2020"]) * 100)
 print(f"3g: added difference column\n{cities_sweden_final.sort_values(by="Könsskillnad (%)", ascending=False)}\n")
 
+#copy-paste för att jag bara har 2 användningar som är ganska olika
+cities_sweden_final["Populationsökning (%)"] = np.abs(
+    ((cities_sweden_final["Total Pop 2020"] - cities_sweden_final["Total Pop 2019"]) 
+        / cities_sweden_final["Total Pop 2019"]) * 100)
+print(f"3h: added population growth column\n{cities_sweden_final.sort_values(by="Populationsökning (%)", ascending=False)}")
+
 if show_plots:
     fig, axes = plt.subplots(1, 2, figsize=(12,5))
 
@@ -81,4 +87,12 @@ if show_plots:
             autopct='%1.1f%%'
             )
     plt.title("3f: Könsfördelning i Sveriga 2020")
+    plt.show()
+
+    sns.barplot(data=cities_sweden_final.sort_values(by="Könsskillnad (%)").tail(10), x="Könsskillnad (%)", y="Kommun", palette="pastel", hue="Kommun")
+    plt.title("3g: Top 5 cities with the largest percentual differences in gender 2020")
+    plt.show()
+
+    sns.barplot(data=cities_sweden_final.sort_values(by="Populationsökning (%)").tail(10), x="Populationsökning (%)", y="Kommun", palette="pastel", hue="Kommun")
+    plt.title("3h: Top 5 cities with the largest percentual population growth")
     plt.show()
