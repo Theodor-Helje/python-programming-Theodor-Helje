@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-show_plots = True
+show_plots = False
 #jag har väldigt medvetet valt att återanvända viss kod (som t.ex. barplots) för enkelheten
 #jag är smått missnöjd över hur lång rader jag har skrivit men det är för enkelt och tidskrävande att skriva allt mindre och i funktioner
 #också onöjd med att jag använder "" föt DF och inte ''
@@ -57,6 +57,13 @@ print(f"3c: modified total\n{cities_sweden.head()}\n")
 cities_sweden_final = pd.merge(cities_gender_merged.set_index("Kommun"), cities_sweden.set_index("Kommun"), on="Kommun").sort_values(by="Total Pop 2020", ascending=False)
 print(f"3d: merged total and merged male / female\n{cities_sweden_final}\n")
 
+#OTROLIGT nöjd med den här koden.
+male_DF, female_DF = cities_sweden_male.set_index("Kommun"), cities_sweden_female.set_index("Kommun")
+cities_sweden_final["Könsskillnad (%)"] = np.abs(
+    ((female_DF["Folkmängd 2020"] - male_DF["Folkmängd 2020"]) 
+        / male_DF["Folkmängd 2020"]) * 100)
+print(f"3g: added difference column\n{cities_sweden_final.sort_values(by="Könsskillnad (%)", ascending=False)}\n")
+
 if show_plots:
     fig, axes = plt.subplots(1, 2, figsize=(12,5))
 
@@ -75,5 +82,3 @@ if show_plots:
             )
     plt.title("3f: Könsfördelning i Sveriga 2020")
     plt.show()
-
-    sns.barplot(data=pd.DataFrame({"gender difference": abs(cities_sweden_final.loc[cities_sweden_final["Kön"] == "Man", "Folkmängd 2020"] / cities_sweden_final.loc[cities_sweden_final["Kön"] == "Kvinna", "Folkmängd 2020"])})) #LIST COMPREHENSION
