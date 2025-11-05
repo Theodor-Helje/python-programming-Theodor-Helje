@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sns
 import data_utils
 
+#1
 student_mat = pd.read_csv("Data\student-mat-missing-data.csv")
 print(f"1b: head:\n{student_mat.head()}\n")
 print(f"1b: info:\n{student_mat.info()}\n")
@@ -18,3 +19,8 @@ print(f"1f: rows where freetime or age is NaN:\n{student_mat[
     student_mat['freetime'].isna() | student_mat['age'].isna()]}\n")
 print(f"1g: proportion of rows with several NaN values:\n{
     len(student_mat[student_mat.isna().sum(axis=1) > 1]) / len(student_mat)}\n")
+
+#2
+student_clean = student_mat[student_mat.isna().sum(axis=1) < 2]
+print(f"2a: rows with several NaN values dropped:\n{student_mat}\n")
+data_utils.plot_missing_df_values(student_clean)
