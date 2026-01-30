@@ -74,3 +74,65 @@ plt.show()
 
 
 #2b
+print(f"sales vs TV:\ncorr: {df_ad["Sales"].corr(df_ad["TV"])}")
+print(f"cov: {df_ad['Sales'].cov(df_ad['TV'])}")
+
+
+#2c
+#The pearson correlation is relatively strong and the covariance is clearly positive.
+
+#3
+print(f"\nsales vs radio:\ncorr: {df_ad["Sales"].corr(df_ad["Radio"])}")
+print(f"cov: {df_ad['Sales'].cov(df_ad['Radio'])}")
+
+plt.scatter(df_ad["Radio"], df_ad["Sales"])
+plt.xlabel("Radio")
+plt.ylabel("Sales")
+plt.title("Sales vs Radio")
+plt.show()
+#it seems to me that there is a small correlation between sales and radio, this however, is 
+#not nearly as strong as with tv and sales. The scatterplot shows some form of linearity
+
+print(f"\nsales vs newspaper:\ncorr: {df_ad["Sales"].corr(df_ad["Newspaper"])}")
+print(f"cov: {df_ad['Sales'].cov(df_ad['Newspaper'])}")
+
+plt.scatter(df_ad["Newspaper"], df_ad["Sales"])
+plt.xlabel("Newspaper")
+plt.ylabel("Sales")
+plt.title("Sales vs Newspaper")
+plt.show()
+#There seems to be no correlation between sales and radio (or possibly a negative one)
+#The pearson correlation is very small (around .2)
+
+
+#4a
+print(df_ad.describe())
+#counts: The total ammount of data points
+#mean: The sum of all values divided by the total number of all data points
+#std: Standard deviation, the typical distance a datapoint is from the mean
+#min: The minimum value in the data set
+#25%: 25% of the data is <= this value
+#50%: 50% of the data is <= this value
+#75%: 75% of the data is <= this value
+#max: The maximum value in the data set
+
+#compute mean
+mean = sum(df_ad["Sales"])/len(df_ad["Sales"])
+print(f"mean: {mean}")
+
+#compute std
+std = np.sqrt(sum(np.pow(df_ad["Sales"] - mean, 2)) / (len(df_ad["Sales"]) - 1))
+print(f"std: {std}")
+
+
+#5a
+df_median_mode = pd.DataFrame(columns=df_ad.columns, index=["median", "mode"])
+df_median_mode.loc["median"] = [df_ad[col].median() for col in df_median_mode.columns]
+df_median_mode.loc["mode"] = [df_ad[col].mode().iloc[0] for col in df_median_mode.columns]
+
+print(df_median_mode)
+#The median and mode seem to be somewhat proportional to the mean.
+
+
+#5b
+print(f"df.std() uses bessels correction: {std == df_ad['Sales'].std()}")
