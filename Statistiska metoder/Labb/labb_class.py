@@ -1,5 +1,5 @@
 import numpy as np
-import scipy.stats as stats
+#import scipy.stats as stats
 
 class LinearRegression:
     def __init__(self, X=None, Y=None):
@@ -45,6 +45,10 @@ class LinearRegression:
     def coef(self):
         return self._coef
     
+    def pred(self, X):
+        _X = np.asarray(X)
+        return np.column_stack(np.ones(_X.shape[0]), _X) @ self.coef #FIX
+    
     def variance(self):
         pass
 
@@ -62,7 +66,7 @@ class LinearRegression:
         return self
 
     def __repr__(self):
-        return f"LinearRegression(d={self.n}, n={self.n})"
+        return f"LinearRegression(n={self.n}, d={self.d})"
 
 
 if __name__ == "__main__":
