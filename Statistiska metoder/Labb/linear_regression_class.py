@@ -91,18 +91,38 @@ class LinearRegression:
         return self._b
     
     @property
-    def var(self):
+    def var(self): #sigma 2
         return np.divide(self.SSE, (self.n - self.d - 1))
     
     @property
-    def std(self):
+    def std(self): #sigma
         return np.sqrt(self.SSE)
+    
+    @property
+    def F_stat(self):
+        return np.divide(np.divide(self.SSR, self.d), self.var)
+    
+    @property
+    def p_value(self):
+        return stats.f(self.d, self.n - self.d - 1).sf(self.F_stat)
+    
+    @property
+    def T_stat_array(self): #ADD T STAT IN ARRAY ACCORDING TO X ROW INDEX
+        
+        pass
+
+    @property
+    def T_stat_p_array(self): #ADD p ARRAY CALCULATED FROM T ARRAY
+
+        pass
     
     def corr(self):
         _corr_matrix = np.empty((self.d, self.d))
+
         for i in range(self.d):
             for j in range(self.d):
                 _corr_matrix[i, j] = stats.pearsonr(self.X[:, i + 1], self.X[:, j + 1])[0]
+                
         return _corr_matrix
     
     def pred(self, X):
@@ -152,4 +172,6 @@ if __name__ == "__main__":
     print(f"var: {lin_reg.var}")
     print(f"std: {lin_reg.std}")
     print(f"pred test: {lin_reg.pred([2, 5, 7])}")
-    print(f"corr:\n{lin_reg.corr()}")
+    print(f"\ncorr:\n{lin_reg.corr()}\n")
+    print(f"F: {lin_reg.F_stat}")
+    print(f"p: {lin_reg.p_value}")
