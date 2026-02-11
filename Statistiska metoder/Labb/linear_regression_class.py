@@ -107,14 +107,13 @@ class LinearRegression:
         return stats.f(self.d, self.n - self.d - 1).sf(self.F_stat)
     
     @property
-    def T_stat_array(self): #ADD T STAT IN ARRAY ACCORDING TO X ROW INDEX
-        
-        pass
+    def T_stat_array(self): #maybe rename
+        _C = np.multiply(np.linalg.pinv(self.X.T @ self.X), self.var)
+        return np.divide(self.b.flatten(), np.multiply(self.std, np.sqrt(np.diag(_C))))
 
     @property
-    def T_stat_p_array(self): #ADD p ARRAY CALCULATED FROM T ARRAY
-
-        pass
+    def params_p_values(self): #review calculations
+        return np.multiply(2, stats.t.sf(np.abs(self.T_stat_array), self.n - self.d - 1))
     
     def corr(self):
         _corr_matrix = np.empty((self.d, self.d))
@@ -175,3 +174,5 @@ if __name__ == "__main__":
     print(f"\ncorr:\n{lin_reg.corr()}\n")
     print(f"F: {lin_reg.F_stat}")
     print(f"p: {lin_reg.p_value}")
+    print(f"T array: {lin_reg.T_stat_array}")
+    print(f"param p vals: {lin_reg.T_stat_p_array}")
