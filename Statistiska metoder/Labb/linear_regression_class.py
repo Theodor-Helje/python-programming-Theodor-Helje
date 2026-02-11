@@ -9,9 +9,7 @@ class LinearRegression:
         self.confidence_level = confidence_level #add and implement completely
 
         if X is not None and Y is not None:
-            self.X = X
-            self.Y = Y
-            self.fit()
+            self.fit(X=X, Y=Y)
     
     @property
     def X(self):
@@ -115,16 +113,12 @@ class LinearRegression:
     def params_p_values(self): #review calculations
         return np.multiply(2, stats.t.sf(np.abs(self.T_stat_array), self.n - self.d - 1))
     
-    def corr(self):
-        _corr_matrix = np.empty((self.d, self.d))
-
-        for i in range(self.d):
-            for j in range(self.d):
-                _corr_matrix[i, j] = stats.pearsonr(self.X[:, i + 1], self.X[:, j + 1])[0]
-                
-        return _corr_matrix
+    @property
+    def corr_matrix(self):
+        _i, _j = np.indices((self.d, self.d))
+        return stats.pearsonr(self.X[:, _i + 1], self.X[:, _j + 1])[0]
     
-    def pred(self, X):
+    def predict(self, X):
         _X = np.asarray(X)
 
         if _X.ndim == 1:
@@ -166,13 +160,13 @@ if __name__ == "__main__":
     print(f"RMSE:: {lin_reg.RMSE}")
     print(f"Syy: {lin_reg.Syy}")
     print(f"SSR: {lin_reg.SSR}")
-    print(f"Rsq: {lin_reg.Rsq}")
+    print(f"Rsq, R^2: {lin_reg.Rsq}")
     print(f"MSR: {lin_reg.MSR}")
     print(f"var: {lin_reg.var}")
     print(f"std: {lin_reg.std}")
-    print(f"pred test: {lin_reg.pred([2, 5, 7])}")
-    print(f"\ncorr:\n{lin_reg.corr()}\n")
-    print(f"F: {lin_reg.F_stat}")
-    print(f"p: {lin_reg.p_value}")
-    print(f"T array: {lin_reg.T_stat_array}")
-    print(f"param p vals: {lin_reg.T_stat_p_array}")
+    print(f"predict test: {lin_reg.predict([2, 5, 7])}")
+    print(f"\ncorr:\n{lin_reg.corr_matrix}\n")
+    print(f"F val: {lin_reg.F_stat}")
+    print(f"p val: {lin_reg.p_value}")
+    print(f"params T array: {lin_reg.T_stat_array}")
+    print(f"params p vals: {lin_reg.params_p_values}")
