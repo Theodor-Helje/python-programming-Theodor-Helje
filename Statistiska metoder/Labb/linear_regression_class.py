@@ -126,10 +126,10 @@ class LinearRegression:
         return stats.pearsonr(self.X[:, _i + 1], self.X[:, _j + 1])[0]
     
     @property
-    def confidence_intervals(self):
+    def confidence_intervals(self): #added self.std
         _crit_val = stats.t.isf(np.divide(self.alpha, 2), self.n - self.d - 1)
-        _lower = self.b.flatten() - np.multiply(_crit_val, np.sqrt(np.diag(self.cov)))
-        _higher = self.b.flatten() + np.multiply(_crit_val, np.sqrt(np.diag(self.cov)))
+        _lower = self.b.flatten() - np.multiply(_crit_val, self.std, np.sqrt(np.diag(self.cov)))
+        _higher = self.b.flatten() + np.multiply(_crit_val, self.std, np.sqrt(np.diag(self.cov)))
         return np.column_stack((_lower, _higher))
     
     def predict(self, X):
