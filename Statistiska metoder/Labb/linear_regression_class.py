@@ -34,6 +34,10 @@ class LinearRegression:
         self._confidence_level = conf_level
 
     @property
+    def alpha(self):
+        return 1 - self.confidence_level
+
+    @property
     def n(self):
         if self.X is not None:
             return self.X.shape[0]
