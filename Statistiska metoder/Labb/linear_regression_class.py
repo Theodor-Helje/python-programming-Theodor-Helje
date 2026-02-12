@@ -127,7 +127,7 @@ class LinearRegression:
     
     @property
     def confidence_intervals(self):
-        _crit_val = stats.t.isf(np.divide((1 - self.confidence_level), 2), self.n - self.d - 1)
+        _crit_val = stats.t.isf(np.divide(self.alpha, 2), self.n - self.d - 1)
         _lower = self.b.flatten() - np.multiply(_crit_val, np.sqrt(np.diag(self.cov)))
         _higher = self.b.flatten() + np.multiply(_crit_val, np.sqrt(np.diag(self.cov)))
         return np.column_stack((_lower, _higher))
