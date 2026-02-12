@@ -2,7 +2,7 @@ import numpy as np
 import scipy.stats as stats
 
 class LinearRegression:
-    def __init__(self, X=None, Y=None, confidence_level=95):
+    def __init__(self, X=None, Y=None, confidence_level=.95):
         self._X = None
         self._Y = None
         self._b= None
@@ -97,6 +97,10 @@ class LinearRegression:
         return np.sqrt(self.SSE)
     
     @property
+    def cov(self):
+        return np.multiply(np.linalg.pinv(self.X.T @ self.X), self.var)
+    
+    @property
     def F_stat(self):
         return np.divide(np.divide(self.SSR, self.d), self.var)
     
@@ -106,8 +110,7 @@ class LinearRegression:
     
     @property
     def T_stat_array(self): #maybe rename
-        _C = np.multiply(np.linalg.pinv(self.X.T @ self.X), self.var)
-        return np.divide(self.b.flatten(), np.multiply(self.std, np.sqrt(np.diag(_C))))
+        return np.divide(self.b.flatten(), np.multiply(self.std, np.sqrt(np.diag(self.cov))))
 
     @property
     def params_p_values(self): #review calculations
@@ -117,6 +120,13 @@ class LinearRegression:
     def corr_matrix(self):
         _i, _j = np.indices((self.d, self.d))
         return stats.pearsonr(self.X[:, _i + 1], self.X[:, _j + 1])[0]
+    
+    @property
+    def confidence_intervals(self):
+        _crit_val = stats.t.isf(np.divide((1 - self.confidence_level), 2), self.n - self.d - 1)
+        _lower = self.b.flatten() - np.multiply(_crit_val, np.sqrt(np.diag(self.cov)))
+        _higher = self.b.flatten() + np.multiply(_crit_val, np.sqrt(np.diag(self.cov)))
+        return np.column_stack((_lower, _higher))
     
     def predict(self, X):
         _X = np.asarray(X)
@@ -170,3 +180,4 @@ if __name__ == "__main__":
     print(f"p val: {lin_reg.p_value}")
     print(f"params T array: {lin_reg.T_stat_array}")
     print(f"params p vals: {lin_reg.params_p_values}")
+    print(f"\nconfidence intervals:\n{lin_reg.confidence_intervals}\n")
