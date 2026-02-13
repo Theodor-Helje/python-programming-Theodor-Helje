@@ -154,6 +154,12 @@ class LinearRegression:
         self._b = np.linalg.pinv(self.X.T @ self.X) @ self.X.T @ self.Y
 
         return self
+    
+    def test_MSE(self, X, Y):
+        return np.mean(np.square(Y - self.predict(X)))
+    
+    def test_RMSE (self, X, Y):
+        return np.sqrt(self.test_MSE(X, Y))
 
     def __repr__(self):
         return f"LinearRegression(n={self.n}, d={self.d})"
@@ -185,3 +191,5 @@ if __name__ == "__main__":
     print(f"params T array: {lin_reg.T_stat_array}")
     print(f"params p vals: {lin_reg.params_p_values}")
     print(f"\nconfidence intervals:\n{lin_reg.confidence_intervals}\n")
+    print(f"mse tet: {lin_reg.test_MSE([2, 5, 7], [1, 6, 7])}")
+    print(f"rmse test: {lin_reg.test_RMSE([2, 5, 7], [1, 6, 7])}")
