@@ -114,7 +114,7 @@ class LinearRegression:
     
     @property
     def T_stat_array(self): #maybe rename
-        return np.divide(self.b.flatten(), np.multiply(self.std, np.sqrt(np.diag(self.cov))))
+        return np.divide(self.b.flatten(), np.sqrt(np.diag(self.cov)))
 
     @property
     def params_p_values(self): #review calculations
